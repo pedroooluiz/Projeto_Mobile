@@ -17,6 +17,7 @@ function AppNavigator() {
         <Tab.Screen
           name="Treinos"
           component={TreinosScreen}
+          options={{ tabBarButton: () => null }} 
         />
         <Tab.Screen
           name="Exercicios"
