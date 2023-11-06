@@ -1,17 +1,70 @@
-import React from 'react';
-import { View, Text, Button } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { View, Text, FlatList, TouchableOpacity, StyleSheet } from 'react-native';
+import { Card } from 'react-native-paper';
+import Api from '../../services/Api';
 
-function TreinosScreen({ navigation }) {
+function TreinosScreen({ route, navigation }) {
+  const { muscle } = route.params;
+  const [exercises, setExercises] = useState([]);
+
+  useEffect(() => {
+    // Fazer a solicitação à API para obter exercícios para o músculo selecionado
+    Api.get(`/exercises?muscle=${muscle}`)
+      .then((response) => {
+        setExercises(response.data);
+      })
+      .catch((error) => {
+        console.error('Erro ao obter dados da API:', error);
+      });
+  }, [muscle]);
+
   return (
-    <View>
-      <Text>Treinos Screen</Text>
-      <Button
-        title="Ir para Exercicios"
-        onPress={() => navigation.navigate('Exercicios')}
+    <View style={styles.container}>
+      <Text style={styles.title}>Treinos para {muscle}</Text>
+
+      <FlatList
+        data={exercises}
+        keyExtractor={(item) => item.name}
+        renderItem={({ item }) => (
+          <TouchableOpacity
+            style={styles.card}
+            onPress={() => {
+              // Navegar para os detalhes do exercício com o nome do exercício como parâmetro
+              navigation.navigate('Detalhes', { exerciseName: item.name });
+            }}
+          >
+            <Text style={styles.cardTitle}>{item.name}</Text>
+          </TouchableOpacity>
+        )}
       />
     </View>
   );
 }
 
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    padding: 16,
+  },
+  title: {
+    fontSize: 20,
+    fontWeight: 'bold',
+    marginBottom: 16,
+  },
+  card: {
+    backgroundColor: 'white',
+    padding: 16,
+    marginBottom: 16,
+    borderRadius: 8,
+    elevation: 4,
+  },
+  cardTitle: {
+    fontSize: 16,
+    fontWeight: 'bold',
+  },
+});
+
 export default TreinosScreen;
+
+
 

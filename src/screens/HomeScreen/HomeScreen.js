@@ -1,16 +1,40 @@
-import React from 'react';
-import { View, Text, Button } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { FlatList, View, Text } from 'react-native';
+import { Card } from 'react-native-paper';
+import Api from '../../services/Api';
 
 function HomeScreen({ navigation }) {
+  const [muscles, setMuscles] = useState([]);
+
+  useEffect(() => {
+    // Fazer a requisição à API e atualizar o estado 'muscles' com os dados
+    Api.get('/exercises')
+      .then((response) => {
+        const muscleData = response.data.map((exercise) => exercise.muscle);
+        const uniqueMuscles = Array.from(new Set(muscleData));
+        setMuscles(uniqueMuscles);
+      })
+      .catch((error) => {
+        console.error('Erro ao obter dados da API:', error);
+      });
+  }, []); // O uso de [] aqui garante que a solicitação seja feita somente uma vez ao montar o componente
+
   return (
     <View>
       <Text>Home Screen</Text>
-      <Button
-        title="Ir para Treinos"
-        onPress={() => {
-          // Navegar para "Treinos" quando o botão for pressionado
-          navigation.navigate('Treinos');
-        }}
+
+      <FlatList
+        data={muscles}
+        keyExtractor={(item) => item}
+        renderItem={({ item }) => (
+          <Card
+            onPress={() => {
+              navigation.navigate('Treinos', { muscle: item });
+            }}
+          >
+            <Card.Title title={item} />
+          </Card>
+        )}
       />
     </View>
   );
