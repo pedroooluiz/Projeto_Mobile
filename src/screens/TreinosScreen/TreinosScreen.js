@@ -15,6 +15,7 @@ function TreinosScreen({ route, navigation }) {
       })
       .catch((error) => {
         console.error('Erro ao obter dados da API:', error);
+          //Coloquei isso aqui pq não estava conseguido obter os dados da api 
       });
   }, [muscle]);
 
@@ -30,7 +31,7 @@ function TreinosScreen({ route, navigation }) {
             style={styles.card}
             onPress={() => {
               // Navegar para os detalhes do exercício com o nome do exercício como parâmetro
-              navigation.navigate('Detalhes', { exerciseName: item.name });
+              navigation.navigate('Exercicios', { exerciseName: item.name });
             }}
           >
             <Text style={styles.cardTitle}>{item.name}</Text>

@@ -16,8 +16,9 @@ function HomeScreen({ navigation }) {
       })
       .catch((error) => {
         console.error('Erro ao obter dados da API:', error);
+        // Isso é para checar sse a Api estava retornado um array
       });
-  }, []); // O uso de [] aqui garante que a solicitação seja feita somente uma vez ao montar o componente
+  }, []); 
 
   return (
     <View>
