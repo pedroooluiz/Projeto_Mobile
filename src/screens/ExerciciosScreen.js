@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet } from 'react-native';
-import Api from '../../services/Api';
+import Api from '../services/Api';
 
 
 function ExerciciosScreen({ route }) {

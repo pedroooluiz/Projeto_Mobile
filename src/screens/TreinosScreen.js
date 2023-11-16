@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, FlatList, TouchableOpacity, StyleSheet } from 'react-native';
 import { Card } from 'react-native-paper';
-import Api from '../../services/Api';
+import Api from '../services/Api';
 
 function TreinosScreen({ route, navigation }) {
   const { muscle } = route.params;

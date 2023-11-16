@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { FlatList, View, Text } from 'react-native';
 import { Card } from 'react-native-paper';
-import Api from '../../services/Api';
+import Api from '../services/Api';
 
 function HomeScreen({ navigation }) {
   const [muscles, setMuscles] = useState([]);
