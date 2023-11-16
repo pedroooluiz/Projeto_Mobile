@@ -47,8 +47,20 @@ function TreinosSalvosScreen({ navigation }) {
               <View style={{ flexDirection: 'column', alignItems: 'flex-start', marginBottom: 20 }}>
                 <Text>Nome do Aluno: {item.nomeAluno}</Text>
                 <Text>Tipo de Treino: {item.tipoTreino}</Text>
-                <Text>Grupos Musculares:</Text>
-                {Array.isArray(item.gruposMusculares) && item.gruposMusculares.map((grupo, grupoIndex) => (
+                <Text>Grupos Musculares A:</Text>
+                {Array.isArray(item.gruposMuscularesA) && item.gruposMuscularesA.map((grupo, grupoIndex) => (
+                  <Text key={grupoIndex}>{grupo}</Text>
+                ))}
+                <Text>Grupos Musculares B:</Text>
+                {Array.isArray(item.gruposMuscularesB) && item.gruposMuscularesB.map((grupo, grupoIndex) => (
+                  <Text key={grupoIndex}>{grupo}</Text>
+                ))}
+                <Text>Grupos Musculares C:</Text>
+                {Array.isArray(item.gruposMuscularesC) && item.gruposMuscularesC.map((grupo, grupoIndex) => (
+                  <Text key={grupoIndex}>{grupo}</Text>
+                ))}
+                <Text>Grupos Musculares D:</Text>
+                {Array.isArray(item.gruposMuscularesD) && item.gruposMuscularesD.map((grupo, grupoIndex) => (
                   <Text key={grupoIndex}>{grupo}</Text>
                 ))}
                 <TouchableOpacity onPress={() => excluirTreino(index)}>

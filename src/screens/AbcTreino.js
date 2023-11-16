@@ -9,8 +9,17 @@ function TreinoAbc({ route, navigation }) {
 
   const [nomeAlunoAtual, setNomeAlunoAtual] = useState(nomeAluno || '');
   const [tipoTreinoAtual, setTipoTreinoAtual] = useState(tipoTreino || '');
-  const [gruposMusculares, setGruposMusculares] = useState([]);
-  const [showDropDown, setShowDropDown] = useState(false);
+  const [gruposMuscularesA, setGruposMuscularesA] = useState([]);
+  const [showDropDownA, setShowDropDownA] = useState(false);
+
+  const [gruposMuscularesB, setGruposMuscularesB] = useState([]);
+  const [showDropDownB, setShowDropDownB] = useState(false);
+
+  const [gruposMuscularesC, setGruposMuscularesC] = useState([]);
+  const [showDropDownC, setShowDropDownC] = useState(false);
+
+  const [gruposMuscularesD, setGruposMuscularesD] = useState([]);
+  const [showDropDownD, setShowDropDownD] = useState(false);
 
   const salvarTreino = async () => {
     try {
@@ -22,7 +31,10 @@ function TreinoAbc({ route, navigation }) {
       const novoTreino = {
         nomeAluno: nomeAlunoAtual,
         tipoTreino: tipoTreinoAtual,
-        gruposMusculares: Array.isArray(gruposMusculares) ? gruposMusculares : [gruposMusculares],
+        gruposMuscularesA: Array.isArray(gruposMuscularesA) ? gruposMuscularesA : [gruposMuscularesA],
+        gruposMuscularesB: Array.isArray(gruposMuscularesB) ? gruposMuscularesB : [gruposMuscularesB],
+        gruposMuscularesC: Array.isArray(gruposMuscularesC) ? gruposMuscularesC : [gruposMuscularesC],
+        gruposMuscularesD: Array.isArray(gruposMuscularesD) ? gruposMuscularesD : [gruposMuscularesD],
       };
   
       if (treinoIndex !== undefined) {
@@ -36,7 +48,10 @@ function TreinoAbc({ route, navigation }) {
       // Limpa os inputs após salvar
       setNomeAlunoAtual('');
       setTipoTreinoAtual('');
-      setGruposMusculares([]);
+      setGruposMuscularesA([]);
+      setGruposMuscularesB([]);
+      setGruposMuscularesC([]);
+      setGruposMuscularesD([]);
   
       navigation.goBack();
     } catch (error) {
@@ -44,16 +59,28 @@ function TreinoAbc({ route, navigation }) {
     }
   };
   
-  const toggleGrupoMuscular = (grupo) => {
-    if (typeof gruposMusculares === 'string') {
-      setGruposMusculares([grupo]);
+  const toggleGrupoMuscularA = (grupo) => {
+    if (typeof gruposMuscularesA === 'string') {
+      setGruposMuscularesA([grupo]);
     } else {
-      if (gruposMusculares.includes(grupo)) {
-        setGruposMusculares(gruposMusculares.filter((item) => item !== grupo));
+      if (gruposMuscularesA.includes(grupo)) {
+        setGruposMuscularesA(gruposMuscularesA.filter((item) => item !== grupo));
       } else {
-        setGruposMusculares([...gruposMusculares, grupo]);
+        setGruposMuscularesA([...gruposMuscularesA, grupo]);
       }
     }
+  };
+
+  const toggleGrupoMuscularB = (grupo) => {
+    // Similar to your existing toggleGrupoMuscular function for group B
+  };
+
+  const toggleGrupoMuscularC = (grupo) => {
+    // Similar to your existing toggleGrupoMuscular function for group C
+  };
+
+  const toggleGrupoMuscularD = (grupo) => {
+    // Similar to your existing toggleGrupoMuscular function for group D
   };
 
   const gruposMuscularesList = [
@@ -84,15 +111,62 @@ function TreinoAbc({ route, navigation }) {
 
         <Divider style={{ marginVertical: 10 }} />
 
-        <Text>Selecione o(s) Grupo(s) Muscular(es):</Text>
+        <Text>Selecione o(s) Grupo(s) Muscular(es) A:</Text>
         <DropDown
-          label="Grupos Musculares"
+          label="Grupos Musculares A"
           mode="outlined"
-          visible={showDropDown}
-          showDropDown={() => setShowDropDown(true)}
-          onDismiss={() => setShowDropDown(false)}
-          value={Array.isArray(gruposMusculares) ? gruposMusculares.join(', ') : gruposMusculares}
-          setValue={setGruposMusculares}
+          visible={showDropDownA}
+          showDropDown={() => setShowDropDownA(true)}
+          onDismiss={() => setShowDropDownA(false)}
+          value={Array.isArray(gruposMuscularesA) ? gruposMuscularesA.join(', ') : gruposMuscularesA}
+          setValue={setGruposMuscularesA}
+          list={gruposMuscularesList}
+          multiSelect
+        />
+
+        <Divider style={{ marginVertical: 10 }} />
+
+        {/* Similar sections for groups B, C, and D */}
+        
+        <Text>Selecione o(s) Grupo(s) Muscular(es) B:</Text>
+        <DropDown
+          label="Grupos Musculares B"
+          mode="outlined"
+          visible={showDropDownB}
+          showDropDown={() => setShowDropDownB(true)}
+          onDismiss={() => setShowDropDownB(false)}
+          value={Array.isArray(gruposMuscularesB) ? gruposMuscularesB.join(', ') : gruposMuscularesB}
+          setValue={setGruposMuscularesB}
+          list={gruposMuscularesList}
+          multiSelect
+        />
+
+        <Divider style={{ marginVertical: 10 }} />
+
+        <Text>Selecione o(s) Grupo(s) Muscular(es) C:</Text>
+        <DropDown
+          label="Grupos Musculares C"
+          mode="outlined"
+          visible={showDropDownC}
+          showDropDown={() => setShowDropDownC(true)}
+          onDismiss={() => setShowDropDownC(false)}
+          value={Array.isArray(gruposMuscularesC) ? gruposMuscularesC.join(', ') : gruposMuscularesC}
+          setValue={setGruposMuscularesC}
+          list={gruposMuscularesList}
+          multiSelect
+        />
+
+        <Divider style={{ marginVertical: 10 }} />
+
+        <Text>Selecione o(s) Grupo(s) Muscular(es) D:</Text>
+        <DropDown
+          label="Grupos Musculares D"
+          mode="outlined"
+          visible={showDropDownD}
+          showDropDown={() => setShowDropDownD(true)}
+          onDismiss={() => setShowDropDownD(false)}
+          value={Array.isArray(gruposMuscularesD) ? gruposMuscularesD.join(', ') : gruposMuscularesD}
+          setValue={setGruposMuscularesD}
           list={gruposMuscularesList}
           multiSelect
         />
@@ -104,6 +178,8 @@ function TreinoAbc({ route, navigation }) {
     </ScrollView>
   );
 }
+
+
 
 export default TreinoAbc;
 
