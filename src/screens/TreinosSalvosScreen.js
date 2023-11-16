@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { FlatList, View, Text, Button, TouchableOpacity, ScrollView } from 'react-native';
+import { FlatList, View, Text, Button, TouchableOpacity } from 'react-native';
 import { useFocusEffect } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
@@ -34,41 +34,40 @@ function TreinosSalvosScreen({ navigation }) {
   };
 
   return (
-    <ScrollView>
-      <View>
-        <Text>Home Screen</Text>
+    <View>
+      <Text>Home Screen</Text>
 
-        {savedTreinos.length > 0 ? (
-          <View>
-            <Text>Treinos Salvos:</Text>
-            <FlatList
-              data={savedTreinos}
-              keyExtractor={(item, index) => index.toString()}
-              renderItem={({ item, index }) => (
-                <View style={{ flexDirection: 'column', alignItems: 'flex-start', marginBottom: 20 }}>
-                  <Text>Nome do Aluno: {item.nomeAluno}</Text>
-                  <Text>Tipo de Treino: {item.tipoTreino}</Text>
-                  <Text>Grupos Musculares:</Text>
-                  {item.gruposMusculares.map((grupo, grupoIndex) => (
-                    <Text key={grupoIndex}>{grupo}</Text>
-                  ))}
-                  <TouchableOpacity onPress={() => excluirTreino(index)}>
-                    <Text style={{ color: 'red' }}>Excluir Treino</Text>
-                  </TouchableOpacity>
-                </View>
-              )}
-            />
-          </View>
-        ) : (
-          <Text>Nenhum treino salvo.</Text>
-        )}
-        <Button
-          title="Adicionar Treino"
-          onPress={() => navigation.navigate('AbcTreino', { nomeAluno: '', tipoTreino: '' })}
-        />
-      </View>
-    </ScrollView>
+      {savedTreinos.length > 0 ? (
+        <View>
+          <Text>Treinos Salvos:</Text>
+          <FlatList
+            data={savedTreinos}
+            keyExtractor={(item, index) => index.toString()}
+            renderItem={({ item, index }) => (
+              <View style={{ flexDirection: 'column', alignItems: 'flex-start', marginBottom: 20 }}>
+                <Text>Nome do Aluno: {item.nomeAluno}</Text>
+                <Text>Tipo de Treino: {item.tipoTreino}</Text>
+                <Text>Grupos Musculares:</Text>
+                {Array.isArray(item.gruposMusculares) && item.gruposMusculares.map((grupo, grupoIndex) => (
+                  <Text key={grupoIndex}>{grupo}</Text>
+                ))}
+                <TouchableOpacity onPress={() => excluirTreino(index)}>
+                  <Text style={{ color: 'red' }}>Excluir Treino</Text>
+                </TouchableOpacity>
+              </View>
+            )}
+          />
+        </View>
+      ) : (
+        <Text>Nenhum treino salvo.</Text>
+      )}
+      <Button
+        title="Adicionar Treino"
+        onPress={() => navigation.navigate('AbcTreino', { nomeAluno: '', tipoTreino: '' })}
+      />
+    </View>
   );
 }
 
 export default TreinosSalvosScreen;
+
