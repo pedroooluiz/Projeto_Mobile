@@ -32,6 +32,18 @@ function TreinosSalvosScreen({ navigation }) {
       console.error('Erro ao excluir treino:', error);
     }
   };
+  const editarTreino = (index) => {
+    const treinoParaEditar = savedTreinos[index];
+    navigation.navigate('AbcTreino', {
+      nomeAluno: treinoParaEditar.nomeAluno || '',
+      tipoTreino: treinoParaEditar.tipoTreino || '',
+      gruposMuscularesA: treinoParaEditar.gruposMuscularesA || [],
+      gruposMuscularesB: treinoParaEditar.gruposMuscularesB || [],
+      gruposMuscularesC: treinoParaEditar.gruposMuscularesC || [],
+      gruposMuscularesD: treinoParaEditar.gruposMuscularesD || [],
+      treinoIndex: index, // Adiciona o índice do treino para identificação durante a edição
+    });
+  };
 
   return (
     <View>
@@ -63,6 +75,9 @@ function TreinosSalvosScreen({ navigation }) {
                 {Array.isArray(item.gruposMuscularesD) && item.gruposMuscularesD.map((grupo, grupoIndex) => (
                   <Text key={grupoIndex}>{grupo}</Text>
                 ))}
+                <TouchableOpacity onPress={() => editarTreino(index)}>
+                  <Text style={{ color: 'blue' }}>Editar Treino</Text>
+                </TouchableOpacity>
                 <TouchableOpacity onPress={() => excluirTreino(index)}>
                   <Text style={{ color: 'red' }}>Excluir Treino</Text>
                 </TouchableOpacity>
@@ -82,4 +97,3 @@ function TreinosSalvosScreen({ navigation }) {
 }
 
 export default TreinosSalvosScreen;
-

@@ -53,7 +53,7 @@ function TreinoAbc({ route, navigation }) {
       setGruposMuscularesC([]);
       setGruposMuscularesD([]);
   
-      navigation.goBack();
+      navigation.navigate('Treinos Salvos');
     } catch (error) {
       console.error('Erro ao salvar treino:', error);
     }
