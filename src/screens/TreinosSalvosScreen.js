@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import { FlatList, View, Text, Button, TouchableOpacity } from 'react-native';
+import { View, Text, Button, TouchableOpacity } from 'react-native';
 import { useFocusEffect } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { Table, Row } from 'react-native-table-component';
 
 function TreinosSalvosScreen({ navigation }) {
   const [savedTreinos, setSavedTreinos] = useState([]);
+  const tableHead = ['Nome do Aluno', 'Tipo de Treino', 'Grupos Musculares A', 'Dias A', 'Grupos Musculares B', 'Dias B', 'Grupos Musculares C', 'Dias C', 'Grupos Musculares D', 'Dias D', 'Ações'];
 
   useFocusEffect(
     React.useCallback(() => {
@@ -32,59 +34,57 @@ function TreinosSalvosScreen({ navigation }) {
       console.error('Erro ao excluir treino:', error);
     }
   };
+
   const editarTreino = (index) => {
     const treinoParaEditar = savedTreinos[index];
     navigation.navigate('AbcTreino', {
       nomeAluno: treinoParaEditar.nomeAluno || '',
       tipoTreino: treinoParaEditar.tipoTreino || '',
       gruposMuscularesA: treinoParaEditar.gruposMuscularesA || [],
+      diasSemanaA: treinoParaEditar.diasSemanaA || [],
       gruposMuscularesB: treinoParaEditar.gruposMuscularesB || [],
+      diasSemanaB: treinoParaEditar.diasSemanaB || [],
       gruposMuscularesC: treinoParaEditar.gruposMuscularesC || [],
+      diasSemanaC: treinoParaEditar.diasSemanaC || [],
       gruposMuscularesD: treinoParaEditar.gruposMuscularesD || [],
-      treinoIndex: index, // Adiciona o índice do treino para identificação durante a edição
+      diasSemanaD: treinoParaEditar.diasSemanaD || [],
+      treinoIndex: index,
     });
   };
 
   return (
     <View>
-      <Text>Home Screen</Text>
-
+      <Text>Treinos Salvos</Text>
       {savedTreinos.length > 0 ? (
-        <View>
-          <Text>Treinos Salvos:</Text>
-          <FlatList
-            data={savedTreinos}
-            keyExtractor={(item, index) => index.toString()}
-            renderItem={({ item, index }) => (
-              <View style={{ flexDirection: 'column', alignItems: 'flex-start', marginBottom: 20 }}>
-                <Text>Nome do Aluno: {item.nomeAluno}</Text>
-                <Text>Tipo de Treino: {item.tipoTreino}</Text>
-                <Text>Grupos Musculares A:</Text>
-                {Array.isArray(item.gruposMuscularesA) && item.gruposMuscularesA.map((grupo, grupoIndex) => (
-                  <Text key={grupoIndex}>{grupo}</Text>
-                ))}
-                <Text>Grupos Musculares B:</Text>
-                {Array.isArray(item.gruposMuscularesB) && item.gruposMuscularesB.map((grupo, grupoIndex) => (
-                  <Text key={grupoIndex}>{grupo}</Text>
-                ))}
-                <Text>Grupos Musculares C:</Text>
-                {Array.isArray(item.gruposMuscularesC) && item.gruposMuscularesC.map((grupo, grupoIndex) => (
-                  <Text key={grupoIndex}>{grupo}</Text>
-                ))}
-                <Text>Grupos Musculares D:</Text>
-                {Array.isArray(item.gruposMuscularesD) && item.gruposMuscularesD.map((grupo, grupoIndex) => (
-                  <Text key={grupoIndex}>{grupo}</Text>
-                ))}
-                <TouchableOpacity onPress={() => editarTreino(index)}>
-                  <Text style={{ color: 'blue' }}>Editar Treino</Text>
-                </TouchableOpacity>
-                <TouchableOpacity onPress={() => excluirTreino(index)}>
-                  <Text style={{ color: 'red' }}>Excluir Treino</Text>
-                </TouchableOpacity>
-              </View>
-            )}
-          />
-        </View>
+        <Table borderStyle={{ borderWidth: 2, borderColor: '#c8e1ff' }}>
+          <Row data={tableHead} style={{ height: 40, backgroundColor: '#f1f8ff' }} textStyle={{ margin: 6 }} />
+          {savedTreinos.map((item, index) => (
+            <Row
+              key={index}
+              data={[
+                item.nomeAluno || '',
+                item.tipoTreino || '',
+                Array.isArray(item.gruposMuscularesA) ? item.gruposMuscularesA.join(', ') : '',
+                Array.isArray(item.diasSemanaA) ? item.diasSemanaA.join(', ') : '',
+                Array.isArray(item.gruposMuscularesB) ? item.gruposMuscularesB.join(', ') : '',
+                Array.isArray(item.diasSemanaB) ? item.diasSemanaB.join(', ') : '',
+                Array.isArray(item.gruposMuscularesC) ? item.gruposMuscularesC.join(', ') : '',
+                Array.isArray(item.diasSemanaC) ? item.diasSemanaC.join(', ') : '',
+                Array.isArray(item.gruposMuscularesD) ? item.gruposMuscularesD.join(', ') : '',
+                Array.isArray(item.diasSemanaD) ? item.diasSemanaD.join(', ') : '',
+                <View style={{ flexDirection: 'row' }}>
+                  <TouchableOpacity onPress={() => editarTreino(index)}>
+                    <Text style={{ color: 'blue', marginRight: 10 }}>Editar</Text>
+                  </TouchableOpacity>
+                  <TouchableOpacity onPress={() => excluirTreino(index)}>
+                    <Text style={{ color: 'red' }}>Excluir</Text>
+                  </TouchableOpacity>
+                </View>,
+              ]}
+              textStyle={{ margin: 6 }}
+            />
+          ))}
+        </Table>
       ) : (
         <Text>Nenhum treino salvo.</Text>
       )}

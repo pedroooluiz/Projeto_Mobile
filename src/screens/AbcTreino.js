@@ -21,43 +21,78 @@ function TreinoAbc({ route, navigation }) {
   const [gruposMuscularesD, setGruposMuscularesD] = useState([]);
   const [showDropDownD, setShowDropDownD] = useState(false);
 
-  const salvarTreino = async () => {
-    try {
-      const savedTreinosJSON = await AsyncStorage.getItem('savedMuscles');
-      const savedTreinos = savedTreinosJSON ? JSON.parse(savedTreinosJSON) : [];
-  
-      const nomeTreinoAtual = treinoIndex !== undefined ? `Treino ${String.fromCharCode(65 + treinoIndex)}` : nomeAlunoAtual;
-  
-      const novoTreino = {
-        nomeAluno: nomeAlunoAtual,
-        tipoTreino: tipoTreinoAtual,
-        gruposMuscularesA: Array.isArray(gruposMuscularesA) ? gruposMuscularesA : [gruposMuscularesA],
-        gruposMuscularesB: Array.isArray(gruposMuscularesB) ? gruposMuscularesB : [gruposMuscularesB],
-        gruposMuscularesC: Array.isArray(gruposMuscularesC) ? gruposMuscularesC : [gruposMuscularesC],
-        gruposMuscularesD: Array.isArray(gruposMuscularesD) ? gruposMuscularesD : [gruposMuscularesD],
-      };
-  
-      if (treinoIndex !== undefined) {
-        savedTreinos[treinoIndex] = novoTreino;
-      } else {
-        savedTreinos.push(novoTreino);
-      }
-  
-      await AsyncStorage.setItem('savedMuscles', JSON.stringify(savedTreinos));
-  
-      // Limpa os inputs após salvar
-      setNomeAlunoAtual('');
-      setTipoTreinoAtual('');
-      setGruposMuscularesA([]);
-      setGruposMuscularesB([]);
-      setGruposMuscularesC([]);
-      setGruposMuscularesD([]);
-  
-      navigation.navigate('Treinos Salvos');
-    } catch (error) {
-      console.error('Erro ao salvar treino:', error);
+  const [diasSemanaA, setDiasSemanaA] = useState([]);
+  const [diasSemanaB, setDiasSemanaB] = useState([]);
+  const [diasSemanaC, setDiasSemanaC] = useState([]);
+  const [diasSemanaD, setDiasSemanaD] = useState([]);
+
+  // Função para lidar com a seleção de um dia da semana
+  const handleDiaSemana = (letra, dia) => {
+    switch (letra) {
+      case 'A':
+        setDiasSemanaA([...diasSemanaA, dia]);
+        break;
+      case 'B':
+        setDiasSemanaB([...diasSemanaB, dia]);
+        break;
+      case 'C':
+        setDiasSemanaC([...diasSemanaC, dia]);
+        break;
+      case 'D':
+        setDiasSemanaD([...diasSemanaD, dia]);
+        break;
+      default:
+        break;
     }
   };
+
+  const salvarTreino = async () => {
+  try {
+    const savedTreinosJSON = await AsyncStorage.getItem('savedMuscles');
+    const savedTreinos = savedTreinosJSON ? JSON.parse(savedTreinosJSON) : [];
+
+    const nomeTreinoAtual = treinoIndex !== undefined ? `Treino ${String.fromCharCode(65 + treinoIndex)}` : nomeAlunoAtual;
+
+    const novoTreino = {
+      nomeAluno: nomeAlunoAtual,
+      tipoTreino: tipoTreinoAtual,
+      gruposMuscularesA: Array.isArray(gruposMuscularesA) ? gruposMuscularesA : [gruposMuscularesA],
+      gruposMuscularesB: Array.isArray(gruposMuscularesB) ? gruposMuscularesB : [gruposMuscularesB],
+      gruposMuscularesC: Array.isArray(gruposMuscularesC) ? gruposMuscularesC : [gruposMuscularesC],
+      gruposMuscularesD: Array.isArray(gruposMuscularesD) ? gruposMuscularesD : [gruposMuscularesD],
+      diasSemanaA,
+      diasSemanaB,
+      diasSemanaC,
+      diasSemanaD,
+    };
+    
+
+    if (treinoIndex !== undefined) {
+      savedTreinos[treinoIndex] = novoTreino;
+    } else {
+      savedTreinos.push(novoTreino);
+    }
+
+    await AsyncStorage.setItem('savedMuscles', JSON.stringify(savedTreinos));
+
+    // Limpa os inputs após salvar
+    setNomeAlunoAtual('');
+    setTipoTreinoAtual('');
+    setGruposMuscularesA([]);
+    setGruposMuscularesB([]);
+    setGruposMuscularesC([]);
+    setGruposMuscularesD([]);
+    setDiasSemanaA([]); // Limpa os dias da semana após salvar
+    setDiasSemanaB([]);
+    setDiasSemanaC([]);
+    setDiasSemanaD([]);
+
+    navigation.navigate('Treinos Salvos');
+  } catch (error) {
+    console.error('Erro ao salvar treino:', error);
+  }
+};
+
   
   const toggleGrupoMuscularA = (grupo) => {
     if (typeof gruposMuscularesA === 'string') {
@@ -94,23 +129,23 @@ function TreinoAbc({ route, navigation }) {
     <ScrollView>
       <View>
         <Text>Formulário de Treino ABC</Text>
-
+  
         <Text>Nome do Aluno:</Text>
         <TextInput
           placeholder="Nome do Aluno"
           value={nomeAlunoAtual}
           onChangeText={(text) => setNomeAlunoAtual(text)}
         />
-
+  
         <Text>Selecione o Tipo de Treino:</Text>
         <TextInput
           placeholder="Tipo de Treino (A, B, C, D)"
           value={tipoTreinoAtual}
           onChangeText={(text) => setTipoTreinoAtual(text.toUpperCase())}
         />
-
+  
         <Divider style={{ marginVertical: 10 }} />
-
+  
         <Text>Selecione o(s) Grupo(s) Muscular(es) A:</Text>
         <DropDown
           label="Grupos Musculares A"
@@ -123,11 +158,19 @@ function TreinoAbc({ route, navigation }) {
           list={gruposMuscularesList}
           multiSelect
         />
-
+             <View style={{ flexDirection: 'row', justifyContent: 'space-around' }}>
+          {['Domingo', 'Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta', 'Sábado'].map((dia) => (
+            <Button
+              key={dia}
+              title={dia.substring(0, 3)}
+              onPress={() => handleDiaSemana('A', dia)}
+            />
+          ))}
+        </View>
+  
+        {/* Repita o bloco para grupos B, C e D */}
         <Divider style={{ marginVertical: 10 }} />
-
-        {/* Similar sections for groups B, C, and D */}
-        
+  
         <Text>Selecione o(s) Grupo(s) Muscular(es) B:</Text>
         <DropDown
           label="Grupos Musculares B"
@@ -140,9 +183,18 @@ function TreinoAbc({ route, navigation }) {
           list={gruposMuscularesList}
           multiSelect
         />
-
+         <View style={{ flexDirection: 'row', justifyContent: 'space-around', marginTop: 10 }}>
+          {['Domingo', 'Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta', 'Sábado'].map((dia) => (
+            <Button
+              key={dia}
+              title={dia.substring(0, 3)}
+              onPress={() => handleDiaSemana('B', dia)}
+            />
+          ))}
+        </View>
+  
         <Divider style={{ marginVertical: 10 }} />
-
+  
         <Text>Selecione o(s) Grupo(s) Muscular(es) C:</Text>
         <DropDown
           label="Grupos Musculares C"
@@ -155,9 +207,18 @@ function TreinoAbc({ route, navigation }) {
           list={gruposMuscularesList}
           multiSelect
         />
-
+                <View style={{ flexDirection: 'row', justifyContent: 'space-around', marginTop: 10 }}>
+          {['Domingo', 'Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta', 'Sábado'].map((dia) => (
+            <Button
+              key={dia}
+              title={dia.substring(0, 3)}
+              onPress={() => handleDiaSemana('C', dia)}
+            />
+          ))}
+        </View>
+  
         <Divider style={{ marginVertical: 10 }} />
-
+  
         <Text>Selecione o(s) Grupo(s) Muscular(es) D:</Text>
         <DropDown
           label="Grupos Musculares D"
@@ -171,12 +232,25 @@ function TreinoAbc({ route, navigation }) {
           multiSelect
         />
 
-        <Divider style={{ marginVertical: 10 }} />
+              {/* Botões para o treino D */}
+              <View style={{ flexDirection: 'row', justifyContent: 'space-around', marginTop: 10 }}>
+          {['Domingo', 'Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta', 'Sábado'].map((dia) => (
+            <Button
+              key={dia}
+              title={dia.substring(0, 3)}
+              onPress={() => handleDiaSemana('D', dia)}
+            />
+          ))}
+        </View>
+  
+     
 
         <Button title="Salvar" onPress={salvarTreino} />
       </View>
     </ScrollView>
   );
+  
+  
 }
 
 

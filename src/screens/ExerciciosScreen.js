@@ -1,14 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import { View, Text, StyleSheet, Image } from 'react-native';
 import Api from '../services/Api';
-
 
 function ExerciciosScreen({ route }) {
   const { exerciseName } = route.params;
   const [exercise, setExercise] = useState(null);
 
   useEffect(() => {
-    
     Api.get(`/exercises?name=${exerciseName}`)
       .then((response) => {
         if (response.data.length > 0) {
@@ -30,6 +28,16 @@ function ExerciciosScreen({ route }) {
           <Text>Equipment: {exercise.equipment}</Text>
           <Text>Difficulty: {exercise.difficulty}</Text>
           <Text>Instructions: {exercise.instructions}</Text>
+
+          {/* Mostra os dias da semana associados ao exercício */}
+          {exercise.diasSemana && exercise.diasSemana.length > 0 && (
+            <>
+              <Text>Dias da Semana:</Text>
+              {exercise.diasSemana.map((dia, index) => (
+                <Text key={index}>{dia}</Text>
+              ))}
+            </>
+          )}
         </View>
       ) : (
         <Text>Carregando informações do exercício...</Text>
@@ -53,6 +61,11 @@ const styles = StyleSheet.create({
   cardTitle: {
     fontSize: 16,
     fontWeight: 'bold',
+  },
+  gif: {
+    width: '100%', // ou a largura desejada
+    height: 200, // ou a altura desejada
+    resizeMode: 'cover', // ou outra opção de redimensionamento
   },
 });
 
