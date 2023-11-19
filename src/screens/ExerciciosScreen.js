@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet, Image } from 'react-native';
 import Api from '../services/Api';
 
+// ... other imports
+
 function ExerciciosScreen({ route }) {
   const { exerciseName } = route.params;
   const [exercise, setExercise] = useState(null);
@@ -29,15 +31,11 @@ function ExerciciosScreen({ route }) {
           <Text>Difficulty: {exercise.difficulty}</Text>
           <Text>Instructions: {exercise.instructions}</Text>
 
-          {/* Mostra os dias da semana associados ao exercício */}
-          {exercise.diasSemana && exercise.diasSemana.length > 0 && (
-            <>
-              <Text>Dias da Semana:</Text>
-              {exercise.diasSemana.map((dia, index) => (
-                <Text key={index}>{dia}</Text>
-              ))}
-            </>
-          )}
+          {/* Dynamically generate the GIF filename */}
+          <Image
+            source={{ uri: `../../assets/${exerciseName.replace(/\s/g, '')}.gif` }}
+            style={styles.gif}
+          />
         </View>
       ) : (
         <Text>Carregando informações do exercício...</Text>
@@ -45,6 +43,9 @@ function ExerciciosScreen({ route }) {
     </View>
   );
 }
+
+// ... styles and export
+
 
 const styles = StyleSheet.create({
   container: {
@@ -63,9 +64,10 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
   },
   gif: {
-    width: '100%', // ou a largura desejada
-    height: 200, // ou a altura desejada
-    resizeMode: 'cover', // ou outra opção de redimensionamento
+    width: '100%',
+    height: 200,
+    resizeMode: 'cover',
+    marginTop: 10, // Adjust the margin as needed
   },
 });
 
