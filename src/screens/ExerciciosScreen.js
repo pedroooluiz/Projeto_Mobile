@@ -31,7 +31,7 @@ function ExerciciosScreen({ route }) {
           <Text>Difficulty: {exercise.difficulty}</Text>
           <Text>Instructions: {exercise.instructions}</Text>
 
-          {/* Dynamically generate the GIF filename */}
+          
           <Image
             source={{ uri: `../../assets/${exerciseName.replace(/\s/g, '')}.gif` }}
             style={styles.gif}
@@ -64,10 +64,11 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
   },
   gif: {
-    width: '100%',
+    width: '50%',
     height: 200,
     resizeMode: 'cover',
-    marginTop: 10, // Adjust the margin as needed
+    marginTop: 10,
+    alignSelf: 'center',
   },
 });
 

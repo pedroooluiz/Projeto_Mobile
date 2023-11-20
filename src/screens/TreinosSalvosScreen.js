@@ -1,69 +1,99 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, StyleSheet, Image } from 'react-native';
-import Api from '../services/Api';
+import { View, Text, Button, TouchableOpacity } from 'react-native';
+import { useFocusEffect } from '@react-navigation/native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { Table, Row } from 'react-native-table-component';
 
+function TreinosSalvosScreen({ navigation }) {
+  const [savedTreinos, setSavedTreinos] = useState([]);
+  const tableHead = ['Nome do Aluno', 'Tipo de Treino', 'Grupos Musculares A', 'Dias A', 'Grupos Musculares B', 'Dias B', 'Grupos Musculares C', 'Dias C', 'Grupos Musculares D', 'Dias D', 'Ações'];
 
-function ExerciciosScreen({ route }) {
-  const { exerciseName } = route.params;
-  const [exercise, setExercise] = useState(null);
+  useFocusEffect(
+    React.useCallback(() => {
+      carregarDados();
+    }, [])
+  );
 
-  useEffect(() => {
-    Api.get(`/exercises?name=${exerciseName}`)
-      .then((response) => {
-        if (response.data.length > 0) {
-          setExercise(response.data[0]);
-        }
-      })
-      .catch((error) => {
-        console.error('Erro ao obter dados da API:', error);
-      });
-  }, [exerciseName]);
+  async function carregarDados() {
+    try {
+      const savedTreinosJSON = await AsyncStorage.getItem('savedMuscles');
+      const savedTreinos = savedTreinosJSON ? JSON.parse(savedTreinosJSON) : [];
+      setSavedTreinos(savedTreinos);
+    } catch (error) {
+      console.error('Erro ao recuperar treinos salvos:', error);
+    }
+  }
+
+  const excluirTreino = async (index) => {
+    try {
+      const updatedTreinos = [...savedTreinos];
+      updatedTreinos.splice(index, 1);
+      await AsyncStorage.setItem('savedMuscles', JSON.stringify(updatedTreinos));
+      setSavedTreinos(updatedTreinos);
+    } catch (error) {
+      console.error('Erro ao excluir treino:', error);
+    }
+  };
+
+  const editarTreino = (index) => {
+    const treinoParaEditar = savedTreinos[index];
+    navigation.navigate('AbcTreino', {
+      nomeAluno: treinoParaEditar.nomeAluno || '',
+      tipoTreino: treinoParaEditar.tipoTreino || '',
+      gruposMuscularesA: treinoParaEditar.gruposMuscularesA || [],
+      diasSemanaA: treinoParaEditar.diasSemanaA || [],
+      gruposMuscularesB: treinoParaEditar.gruposMuscularesB || [],
+      diasSemanaB: treinoParaEditar.diasSemanaB || [],
+      gruposMuscularesC: treinoParaEditar.gruposMuscularesC || [],
+      diasSemanaC: treinoParaEditar.diasSemanaC || [],
+      gruposMuscularesD: treinoParaEditar.gruposMuscularesD || [],
+      diasSemanaD: treinoParaEditar.diasSemanaD || [],
+      treinoIndex: index,
+    });
+  };
 
   return (
-    <View style={styles.container}>
-      {exercise ? (
-        <View style={styles.card}>
-          {/* Mostra a imagem do exercício com base no nome */}
-          <Image
-            source={{ uri: `asset:/${Dumbbell}.gif` }}
-            style={styles.gif}
-          />
-          <Text style={styles.cardTitle}>{exercise.name}</Text>
-          <Text>Type: {exercise.type}</Text>
-          <Text>Muscle: {exercise.muscle}</Text>
-          <Text>Equipment: {exercise.equipment}</Text>
-          <Text>Difficulty: {exercise.difficulty}</Text>
-          <Text>Instructions: {exercise.instructions}</Text>
-        </View>
+    <View>
+      <Text>Treinos Salvos</Text>
+      {savedTreinos.length > 0 ? (
+        <Table borderStyle={{ borderWidth: 2, borderColor: '#c8e1ff' }}>
+          <Row data={tableHead} style={{ height: 40, backgroundColor: '#f1f8ff' }} textStyle={{ margin: 6 }} />
+          {savedTreinos.map((item, index) => (
+            <Row
+              key={index}
+              data={[
+                item.nomeAluno || '',
+                item.tipoTreino || '',
+                Array.isArray(item.gruposMuscularesA) ? item.gruposMuscularesA.join(', ') : '',
+                Array.isArray(item.diasSemanaA) ? item.diasSemanaA.join(', ') : '',
+                Array.isArray(item.gruposMuscularesB) ? item.gruposMuscularesB.join(', ') : '',
+                Array.isArray(item.diasSemanaB) ? item.diasSemanaB.join(', ') : '',
+                Array.isArray(item.gruposMuscularesC) ? item.gruposMuscularesC.join(', ') : '',
+                Array.isArray(item.diasSemanaC) ? item.diasSemanaC.join(', ') : '',
+                Array.isArray(item.gruposMuscularesD) ? item.gruposMuscularesD.join(', ') : '',
+                Array.isArray(item.diasSemanaD) ? item.diasSemanaD.join(', ') : '',
+                <View style={{ flexDirection: 'row' }}>
+                  <TouchableOpacity onPress={() => editarTreino(index)}>
+                    <Text style={{ color: 'blue', marginRight: 10 }}>Editar</Text>
+                  </TouchableOpacity>
+                  <TouchableOpacity onPress={() => excluirTreino(index)}>
+                    <Text style={{ color: 'red' }}>Excluir</Text>
+                  </TouchableOpacity>
+                </View>,
+              ]}
+              textStyle={{ margin: 6 }}
+            />
+          ))}
+        </Table>
       ) : (
-        <Text>Carregando informações do exercício...</Text>
+        <Text>Nenhum treino salvo.</Text>
       )}
+      <Button
+        title="Adicionar Treino"
+        onPress={() => navigation.navigate('AbcTreino', { nomeAluno: '', tipoTreino: '' })}
+      />
     </View>
   );
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    padding: 16,
-  },
-  card: {
-    backgroundColor: 'white',
-    padding: 16,
-    marginBottom: 16,
-    borderRadius: 8,
-    elevation: 4,
-  },
-  cardTitle: {
-    fontSize: 16,
-    fontWeight: 'bold',
-  },
-  gif: {
-    width: '100%',
-    height: 200,
-    resizeMode: 'cover',
-    marginBottom: 10,  // Adicionei um espaço para separar a imagem do texto
-  },
-});
-
-export default ExerciciosScreen;
+export default TreinosSalvosScreen;
