@@ -66,7 +66,7 @@ const styles = StyleSheet.create({
     color: '#333', // Cor preta, você pode ajustar conforme necessário
   },
   gif: {
-    width: '100%',
+    width: '50%',
     height: 200,
     resizeMode: 'cover',
     marginTop: 10,
