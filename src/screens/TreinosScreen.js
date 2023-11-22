@@ -15,7 +15,6 @@ function TreinosScreen({ route, navigation }) {
       })
       .catch((error) => {
         console.error('Erro ao obter dados da API:', error);
-          //Coloquei isso aqui pq não estava conseguido obter os dados da api 
       });
   }, [muscle]);
 
@@ -46,11 +45,13 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 16,
+    backgroundColor: '#E2DFE6',
   },
   title: {
     fontSize: 20,
     fontWeight: 'bold',
     marginBottom: 16,
+    color: '#4285F4', // Cor azul, você pode ajustar conforme necessário
   },
   card: {
     backgroundColor: 'white',
@@ -66,6 +67,3 @@ const styles = StyleSheet.create({
 });
 
 export default TreinosScreen;
-
-
-
