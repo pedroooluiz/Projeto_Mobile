@@ -125,13 +125,14 @@ function TreinoAbc({ route, navigation }) {
     { label: 'Ombros', value: 'Ombros' },
   ];
 
-  return (
-    <ScrollView>
-      <View>
-        <Text>Formulário de Treino ABC</Text>
+   return (
+    <ScrollView style={{ backgroundColor: '#E2DFE6', padding: 20 }}>
+      <View style={{ backgroundColor: 'white', padding: 20, borderRadius: 10 }}>
+        <Text style={{ fontSize: 18, marginBottom: 10, fontWeight: 'bold' }}>Formulário de Treino ABC</Text>
   
         <Text>Nome do Aluno:</Text>
         <TextInput
+          style={{ backgroundColor: 'white', padding: 10, marginBottom: 10, borderRadius: 5 }}
           placeholder="Nome do Aluno"
           value={nomeAlunoAtual}
           onChangeText={(text) => setNomeAlunoAtual(text)}
@@ -139,6 +140,7 @@ function TreinoAbc({ route, navigation }) {
   
         <Text>Selecione o Tipo de Treino:</Text>
         <TextInput
+          style={{ backgroundColor: 'white', padding: 10, marginBottom: 10, borderRadius: 5 }}
           placeholder="Tipo de Treino (A, B, C, D)"
           value={tipoTreinoAtual}
           onChangeText={(text) => setTipoTreinoAtual(text.toUpperCase())}
@@ -155,20 +157,15 @@ function TreinoAbc({ route, navigation }) {
           onDismiss={() => setShowDropDownA(false)}
           value={Array.isArray(gruposMuscularesA) ? gruposMuscularesA.join(', ') : gruposMuscularesA}
           setValue={setGruposMuscularesA}
-          list={gruposMuscularesList}
+          list={[
+            { label: 'Peito', value: 'Peito' },
+            { label: 'Costas', value: 'Costas' },
+            { label: 'Pernas', value: 'Pernas' },
+            { label: 'Ombros', value: 'Ombros' },
+          ]}
           multiSelect
         />
-             <View style={{ flexDirection: 'row', justifyContent: 'space-around' }}>
-          {['Domingo', 'Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta', 'Sábado'].map((dia) => (
-            <Button
-              key={dia}
-              title={dia.substring(0, 3)}
-              onPress={() => handleDiaSemana('A', dia)}
-            />
-          ))}
-        </View>
-  
-        {/* Repita o bloco para grupos B, C e D */}
+
         <Divider style={{ marginVertical: 10 }} />
   
         <Text>Selecione o(s) Grupo(s) Muscular(es) B:</Text>
@@ -180,19 +177,15 @@ function TreinoAbc({ route, navigation }) {
           onDismiss={() => setShowDropDownB(false)}
           value={Array.isArray(gruposMuscularesB) ? gruposMuscularesB.join(', ') : gruposMuscularesB}
           setValue={setGruposMuscularesB}
-          list={gruposMuscularesList}
+          list={[
+            { label: 'Peito', value: 'Peito' },
+            { label: 'Costas', value: 'Costas' },
+            { label: 'Pernas', value: 'Pernas' },
+            { label: 'Ombros', value: 'Ombros' },
+          ]}
           multiSelect
         />
-         <View style={{ flexDirection: 'row', justifyContent: 'space-around', marginTop: 10 }}>
-          {['Domingo', 'Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta', 'Sábado'].map((dia) => (
-            <Button
-              key={dia}
-              title={dia.substring(0, 3)}
-              onPress={() => handleDiaSemana('B', dia)}
-            />
-          ))}
-        </View>
-  
+
         <Divider style={{ marginVertical: 10 }} />
   
         <Text>Selecione o(s) Grupo(s) Muscular(es) C:</Text>
@@ -204,19 +197,15 @@ function TreinoAbc({ route, navigation }) {
           onDismiss={() => setShowDropDownC(false)}
           value={Array.isArray(gruposMuscularesC) ? gruposMuscularesC.join(', ') : gruposMuscularesC}
           setValue={setGruposMuscularesC}
-          list={gruposMuscularesList}
+          list={[
+            { label: 'Peito', value: 'Peito' },
+            { label: 'Costas', value: 'Costas' },
+            { label: 'Pernas', value: 'Pernas' },
+            { label: 'Ombros', value: 'Ombros' },
+          ]}
           multiSelect
         />
-                <View style={{ flexDirection: 'row', justifyContent: 'space-around', marginTop: 10 }}>
-          {['Domingo', 'Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta', 'Sábado'].map((dia) => (
-            <Button
-              key={dia}
-              title={dia.substring(0, 3)}
-              onPress={() => handleDiaSemana('C', dia)}
-            />
-          ))}
-        </View>
-  
+
         <Divider style={{ marginVertical: 10 }} />
   
         <Text>Selecione o(s) Grupo(s) Muscular(es) D:</Text>
@@ -228,32 +217,25 @@ function TreinoAbc({ route, navigation }) {
           onDismiss={() => setShowDropDownD(false)}
           value={Array.isArray(gruposMuscularesD) ? gruposMuscularesD.join(', ') : gruposMuscularesD}
           setValue={setGruposMuscularesD}
-          list={gruposMuscularesList}
+          list={[
+            { label: 'Peito', value: 'Peito' },
+            { label: 'Costas', value: 'Costas' },
+            { label: 'Pernas', value: 'Pernas' },
+            { label: 'Ombros', value: 'Ombros' },
+          ]}
           multiSelect
         />
 
-              {/* Botões para o treino D */}
-              <View style={{ flexDirection: 'row', justifyContent: 'space-around', marginTop: 10 }}>
-          {['Domingo', 'Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta', 'Sábado'].map((dia) => (
-            <Button
-              key={dia}
-              title={dia.substring(0, 3)}
-              onPress={() => handleDiaSemana('D', dia)}
-            />
-          ))}
-        </View>
+        <Divider style={{ marginVertical: 10 }} />
   
-     
-
-        <Button title="Salvar" onPress={salvarTreino} />
+        <Button
+          title="Salvar"
+          onPress={salvarTreino}
+          style={{ width: '70%', height: 40, backgroundColor: '#4285F4', borderRadius: 5, alignSelf: 'center', marginTop: 20 }}
+        />
       </View>
     </ScrollView>
   );
-  
-  
 }
 
-
-
 export default TreinoAbc;
-
