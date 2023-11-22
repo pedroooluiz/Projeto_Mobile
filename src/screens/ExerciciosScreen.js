@@ -2,8 +2,6 @@ import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet, Image } from 'react-native';
 import Api from '../services/Api';
 
-// ... other imports
-
 function ExerciciosScreen({ route }) {
   const { exerciseName } = route.params;
   const [exercise, setExercise] = useState(null);
@@ -25,32 +23,29 @@ function ExerciciosScreen({ route }) {
       {exercise ? (
         <View style={styles.card}>
           <Text style={styles.cardTitle}>{exercise.name}</Text>
-          <Text>Type: {exercise.type}</Text>
-          <Text>Muscle: {exercise.muscle}</Text>
-          <Text>Equipment: {exercise.equipment}</Text>
-          <Text>Difficulty: {exercise.difficulty}</Text>
-          <Text>Instructions: {exercise.instructions}</Text>
+          <Text style={styles.cardText}>Type: {exercise.type}</Text>
+          <Text style={styles.cardText}>Muscle: {exercise.muscle}</Text>
+          <Text style={styles.cardText}>Equipment: {exercise.equipment}</Text>
+          <Text style={styles.cardText}>Difficulty: {exercise.difficulty}</Text>
+          <Text style={styles.cardText}>Instructions: {exercise.instructions}</Text>
 
-          
           <Image
             source={{ uri: `../../assets/${exerciseName.replace(/\s/g, '')}.gif` }}
             style={styles.gif}
           />
         </View>
       ) : (
-        <Text>Carregando informações do exercício...</Text>
+        <Text style={styles.loadingText}>Carregando informações do exercício...</Text>
       )}
     </View>
   );
 }
 
-// ... styles and export
-
-
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 16,
+    backgroundColor: '#E2DFE6',
   },
   card: {
     backgroundColor: 'white',
@@ -60,15 +55,27 @@ const styles = StyleSheet.create({
     elevation: 4,
   },
   cardTitle: {
-    fontSize: 16,
+    fontSize: 18,
     fontWeight: 'bold',
+    marginBottom: 10,
+    color: '#4285F4', // Cor azul, você pode ajustar conforme necessário
+  },
+  cardText: {
+    fontSize: 16,
+    marginBottom: 8,
+    color: '#333', // Cor preta, você pode ajustar conforme necessário
   },
   gif: {
-    width: '50%',
+    width: '100%',
     height: 200,
     resizeMode: 'cover',
     marginTop: 10,
     alignSelf: 'center',
+    borderRadius: 5,
+  },
+  loadingText: {
+    fontSize: 16,
+    color: '#333', // Cor preta, você pode ajustar conforme necessário
   },
 });
 
