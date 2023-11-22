@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, Button, TouchableOpacity } from 'react-native';
+import { View, Text, Button, TouchableOpacity, StyleSheet } from 'react-native';
 import { useFocusEffect } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Table, Row } from 'react-native-table-component';
@@ -53,8 +53,8 @@ function TreinosSalvosScreen({ navigation }) {
   };
 
   return (
-    <View>
-      <Text>Treinos Salvos</Text>
+    <View style={styles.container}>
+      <Text style={styles.headerText}>Treinos Salvos</Text>
       {savedTreinos.length > 0 ? (
         <Table borderStyle={{ borderWidth: 2, borderColor: '#c8e1ff' }}>
           <Row data={tableHead} style={{ height: 40, backgroundColor: '#f1f8ff' }} textStyle={{ margin: 6 }} />
@@ -72,12 +72,12 @@ function TreinosSalvosScreen({ navigation }) {
                 Array.isArray(item.diasSemanaC) ? item.diasSemanaC.join(', ') : '',
                 Array.isArray(item.gruposMuscularesD) ? item.gruposMuscularesD.join(', ') : '',
                 Array.isArray(item.diasSemanaD) ? item.diasSemanaD.join(', ') : '',
-                <View style={{ flexDirection: 'row' }}>
+                <View style={styles.actionsContainer}>
                   <TouchableOpacity onPress={() => editarTreino(index)}>
-                    <Text style={{ color: 'blue', marginRight: 10 }}>Editar</Text>
+                    <Text style={styles.editText}>Editar</Text>
                   </TouchableOpacity>
                   <TouchableOpacity onPress={() => excluirTreino(index)}>
-                    <Text style={{ color: 'red' }}>Excluir</Text>
+                    <Text style={styles.deleteText}>Excluir</Text>
                   </TouchableOpacity>
                 </View>,
               ]}
@@ -86,7 +86,7 @@ function TreinosSalvosScreen({ navigation }) {
           ))}
         </Table>
       ) : (
-        <Text>Nenhum treino salvo.</Text>
+        <Text style={styles.noTreinosText}>Nenhum treino salvo.</Text>
       )}
       <Button
         title="Adicionar Treino"
@@ -95,5 +95,33 @@ function TreinosSalvosScreen({ navigation }) {
     </View>
   );
 }
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    padding: 16,
+    backgroundColor: '#E2DFE6',
+  },
+  headerText: {
+    fontSize: 24,
+    fontWeight: 'bold',
+    marginBottom: 20,
+    color: '#4285F4', // Cor azul, você pode ajustar conforme necessário
+  },
+  actionsContainer: {
+    flexDirection: 'row',
+  },
+  editText: {
+    color: 'blue',
+    marginRight: 10,
+  },
+  deleteText: {
+    color: 'red',
+  },
+  noTreinosText: {
+    fontSize: 16,
+    color: '#333', // Cor preta, você pode ajustar conforme necessário
+  },
+});
 
 export default TreinosSalvosScreen;
